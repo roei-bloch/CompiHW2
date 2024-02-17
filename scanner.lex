@@ -36,10 +36,10 @@ continue                  {return CONTINUE;}
 =                         {return ASSIGN;} 
 \<|\>|\<=|\>=             {return BLE;}
 ==|\!=                    {return EQU;}
-\+                        {return PLUS;}
-\-                        {return MINUS;}
-\*                        {return MULT;}
-\/                        {return DIVIDE;}
+\+                        {return PLUS_MINUS;}
+\-                        {return PLUS_MINUS;}
+\*                        {return MULT_DIVIDE;}
+\/                        {return MULT_DIVIDE;}
 
 
 
@@ -48,7 +48,7 @@ continue                  {return CONTINUE;}
 \"([^\n\r\"\\]|\\[rnt"\\])+\" {return STRING;}
 [ \r\n\t]+                {}
 \/\/[^\r\n]*[\r|\n|\r\n]?   {}
-.                         {return -1;}
+.                         {output::errorLex(yylineno); exit(0);}
 
 %%
 
