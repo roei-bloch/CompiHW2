@@ -1,0 +1,91 @@
+%{
+    #include "output.hpp"
+    int yylex();
+    void printProductionRule(const int ruleno);
+    void yyerror(const char*);
+
+%}
+
+
+
+%nonassoc NUM
+%token ID
+%token STRING
+%token INT
+%token BYTE
+%nonassoc B
+%token BOOL
+%left AND
+%left OR
+%right NOT
+%token TRUE
+%token FALSE
+%token RETURN
+%token IF
+%token WHILE
+%token BREAK
+%token CONTINUE
+%token SC
+%right ASSIGN
+%left EQU
+%left BLE
+%nonassoc BINOP
+%left PLUS
+%left MINUS
+%left MULT
+%left DIVIDE
+%left LBRACE
+%left RBRACE
+%left LPAREN
+%left RPAREN
+%nonassoc ELSE
+
+
+
+
+
+
+%%
+
+
+Program : Statements {printProductionRule(1);}
+Statements : Statement {printProductionRule(2);}
+            | Statements Statement {printProductionRule(3);}
+Statement   : LBRACE Statements RBRACE {printProductionRule(4);}
+            | Type ID SC {printProductionRule(5);}
+            | Type ID ASSIGN Exp SC {printProductionRule(6);}
+            | ID ASSIGN Exp SC {printProductionRule(7);}
+            | Call SC {printProductionRule(8);}
+            | RETURN SC {printProductionRule(9);}
+            | IF LPAREN Exp RPAREN Statement {printProductionRule(11);}
+            | IF LPAREN Exp RPAREN Statement ELSE Statement {printProductionRule(12);}
+            | WHILE LPAREN Exp RPAREN Statement {printProductionRule(13);}
+            | BREAK SC {printProductionRule(14);}
+            | CONTINUE SC {printProductionRule(15);}
+Call : ID LPAREN Exp RPAREN {printProductionRule(16);}
+Type : INT {printProductionRule(17);}
+      | BYTE {printProductionRule(18);}
+      | BOOL {printProductionRule(19);}
+Exp : LPAREN Exp RPAREN {printProductionRule(20);}
+     | Exp MULT Exp {printProductionRule(21);}
+     | Exp DIVIDE Exp {printProductionRule(21);}
+     | Exp PLUS Exp {printProductionRule(21);}
+     | Exp MINUS Exp {printProductionRule(21);}
+     | ID {printProductionRule(22);}
+     | Call {printProductionRule(23);}
+     | NUM {printProductionRule(24);}
+     | NUM B {printProductionRule(25);}
+     | STRING {printProductionRule(26);}
+     | TRUE {printProductionRule(27);}
+     | FALSE {printProductionRule(28);}
+     | NOT Exp {printProductionRule(29);}
+     | Exp AND Exp {printProductionRule(30);}
+     | Exp OR Exp {printProductionRule(31);}
+     | Exp BLE Exp {printProductionRule(32);}
+     | Exp EQU Exp {printProductionRule(32);}
+     | LPAREN Type RPAREN Exp {printProductionRule(33);}
+
+
+
+
+%%
